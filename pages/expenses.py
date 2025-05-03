@@ -4,10 +4,6 @@ import requests
 import pandas as pd
 from datetime import datetime
 
-if not st.session_state.get("connected"):
-    st.warning("Você precisa estar logado para acessar essa página.")
-    st.stop()
-
 API_KEY = st.secrets["supabase"]["key"]
 SUPABASE_URL = st.secrets["supabase"]["url"]
 
