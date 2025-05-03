@@ -1,0 +1,9 @@
+streamlit
+pandas
+numpy
+matplotlib
+seaborn
+openpyxl
+plotly
+dotenv
+streamlit_google_auth
