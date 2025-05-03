@@ -15,7 +15,7 @@ if 'connected' not in st.session_state:
             secret_credentials_path=temp.name,
             cookie_name='my_cookie_name',
             cookie_key='my_cookie_key',
-            redirect_uri='https://relatorio-financeiro.streamlit.app/',
+            redirect_uri='https://relatorio-financeiro.streamlit.app',
         )
         st.session_state["authenticator"] = authenticator
 
