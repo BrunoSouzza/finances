@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 
 API_KEY = st.secrets["supabase"]["key"]
-SUPABASE_URL = st.secrets["supabase"]["url"]
+SUPABASE_URL = f"{st.secrets['supabase']['url']}/expenses_daily"
 
 HEADERS = {
     "apikey": API_KEY,
@@ -55,8 +55,6 @@ with st.form("form_novo_item"):
 
 st.divider()
 
-st.text("📄 Current Table")
-
 col_f1, col_f2 = st.columns(2)
 meses = {
     1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
@@ -79,10 +77,9 @@ def get_data(mes, ano):
         data_fim = f"{ano}-{mes + 1:02d}-01"
 
     params = {
-        "created_at": f"gte.{data_inicio}",
-        "created_at": f"lt.{data_fim}",
+    "and": f"(created_at.gte.{data_inicio},created_at.lt.{data_fim})"
     }
-
+    
     response = requests.get(SUPABASE_URL, headers=HEADERS, params=params)
     if response.status_code == 200:
         return pd.DataFrame(response.json())
@@ -118,7 +115,7 @@ col1, col2, col3 = st.columns(3)
 # Definindo o limite como 1000 (fora do bloco condicional para evitar erro)
 limite = 1000
 
-col1.metric("Limite Total", f"R$ {limite:,.2f}".replace(",", "v").replace(".", ",").replace("v", "."), "%", delta_color="off")
-col2.metric("Total Gasto", f"R$ {total:,.2f}".replace(",", "v").replace(".", ",").replace("v", ","), f"{(total / limite) * 100:.2f}%".replace(".", ",") if limite else "0%")
-col3.metric("Saldo Total", f"R$ {saldo:,.2f}".replace(",", "v").replace(".", ",").replace("v", ","), f"{(saldo / limite) * 100:.2f}%".replace(".", ",") if limite else "0%")
+col1.metric("Limite Total", f"R$ {limite:,.2f}".replace(",", "v").replace(".", ",").replace("v", "."), "%", delta_color="off", border=True)
+col2.metric("Total Gasto", f"R$ {total:,.2f}".replace(",", "v").replace(".", ",").replace("v", ","), f"{(total / limite) * 100:.2f}%".replace(".", ",") if limite else "0%", border=True)
+col3.metric("Saldo Total", f"R$ {saldo:,.2f}".replace(",", "v").replace(".", ",").replace("v", ","), f"{(saldo / limite) * 100:.2f}%".replace(".", ",") if limite else "0%", border=True)
 
